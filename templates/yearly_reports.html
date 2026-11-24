@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Yearly Expense Reports</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+    <!-- Navigation Bar -->
+    <nav>
+
+        <div class="logo">
+            💰 Expense Tracker
+        </div>
+
+        <div class="nav-links">
+
+            <a href="/">Dashboard</a>
+
+            <a href="/">Expenses</a>
+
+            <a href="/reports">Reports</a>
+
+            <a href="/monthly-reports">
+                Monthly Reports
+            </a>
+
+            <a href="/yearly-reports">
+                Yearly Reports
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- Main Container -->
+    <div class="container">
+
+        <h1>Yearly Expense Reports</h1>
+
+        <p class="subtitle">
+            View your total expenses year by year.
+        </p>
+
+
+        <!-- Yearly Spending -->
+        <div class="expenses">
+
+            <h2>Yearly Spending</h2>
+
+            <table>
+
+                <thead>
+
+                    <tr>
+                        <th>Year</th>
+                        <th>Total Spending</th>
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for year, amount in yearly_data %}
+
+                    <tr>
+
+                        <td>
+                            {{ year }}
+                        </td>
+
+                        <td>
+                            ₹{{ "%.2f"|format(amount) }}
+                        </td>
+
+                    </tr>
+
+                    {% else %}
+
+                    <tr>
+
+                        <td colspan="2">
+                            No expenses available.
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Expense Reports</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <!-- Navigation Bar -->
+    <nav>
+
+        <div class="logo">
+            💰 Expense Tracker
+        </div>
+
+        <div class="nav-links">
+
+            <a href="/">
+                Dashboard
+            </a>
+
+            <a href="/">
+                Expenses
+            </a>
+
+            <a href="/reports">
+                Reports
+            </a>
+
+            <a href="/monthly-reports">
+                Monthly Reports
+            </a>
+
+            <a href="/yearly-reports">
+                Yearly Reports
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- Main Container -->
+    <div class="container">
+
+        <h1>Expense Reports</h1>
+
+        <p class="subtitle">
+            Analyze your spending and understand where your money goes.
+        </p>
+
+
+        <!-- Total Spending -->
+        <div class="report-total">
+
+            <h2>Total Spending</h2>
+
+            <p>
+                ₹{{ "%.2f"|format(total_expenses) }}
+            </p>
+
+        </div>
+
+
+        <!-- Category Cards -->
+        <div class="report-cards">
+
+            <!-- Food -->
+            <div class="report-card">
+
+                <h3>🍔 Food</h3>
+
+                <p>
+                    ₹{{ "%.2f"|format(category_totals.get('Food', 0)) }}
+                </p>
+
+            </div>
+
+
+            <!-- Travel -->
+            <div class="report-card">
+
+                <h3>🚌 Travel</h3>
+
+                <p>
+                    ₹{{ "%.2f"|format(category_totals.get('Travel', 0)) }}
+                </p>
+
+            </div>
+
+
+            <!-- Shopping -->
+            <div class="report-card">
+
+                <h3>🛍️ Shopping</h3>
+
+                <p>
+                    ₹{{ "%.2f"|format(category_totals.get('Shopping', 0)) }}
+                </p>
+
+            </div>
+
+
+            <!-- Education -->
+            <div class="report-card">
+
+                <h3>📚 Education</h3>
+
+                <p>
+                    ₹{{ "%.2f"|format(category_totals.get('Education', 0)) }}
+                </p>
+
+            </div>
+
+
+            <!-- Entertainment -->
+            <div class="report-card">
+
+                <h3>🎮 Entertainment</h3>
+
+                <p>
+                    ₹{{ "%.2f"|format(category_totals.get('Entertainment', 0)) }}
+                </p>
+
+            </div>
+
+
+            <!-- Other -->
+            <div class="report-card">
+
+                <h3>📦 Other</h3>
+
+                <p>
+                    ₹{{ "%.2f"|format(category_totals.get('Other', 0)) }}
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- Charts Section -->
+        <div class="chart-section">
+
+            <h2>Spending by Category</h2>
+
+
+            <div class="charts-container">
+
+
+                <!-- Bar Chart -->
+                <div class="chart-box">
+
+                    <h3>Bar Chart</h3>
+
+                    <canvas id="expenseChart"></canvas>
+
+                </div>
+
+
+                <!-- Pie Chart -->
+                <div class="chart-box">
+
+                    <h3>Expense Distribution</h3>
+
+                    <canvas id="expensePieChart"></canvas>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Chart.js Library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+    <script>
+
+        // =========================
+        // CATEGORY NAMES
+        // =========================
+
+        const categoryNames = [
+            "Food",
+            "Travel",
+            "Shopping",
+            "Education",
+            "Entertainment",
+            "Other"
+        ];
+
+
+        // =========================
+        // CATEGORY VALUES
+        // =========================
+
+        const categoryValues = [
+
+            {{ category_totals.get('Food', 0) }},
+
+            {{ category_totals.get('Travel', 0) }},
+
+            {{ category_totals.get('Shopping', 0) }},
+
+            {{ category_totals.get('Education', 0) }},
+
+            {{ category_totals.get('Entertainment', 0) }},
+
+            {{ category_totals.get('Other', 0) }}
+
+        ];
+
+
+        // =========================
+        // BAR CHART
+        // =========================
+
+        const barCanvas =
+            document.getElementById("expenseChart");
+
+
+        new Chart(barCanvas, {
+
+            type: "bar",
+
+            data: {
+
+                labels: categoryNames,
+
+                datasets: [{
+
+                    label: "Amount Spent (₹)",
+
+                    data: categoryValues
+
+                }]
+
+            },
+
+            options: {
+
+                responsive: true,
+
+                maintainAspectRatio: true,
+
+                scales: {
+
+                    y: {
+
+                        beginAtZero: true,
+
+                        title: {
+
+                            display: true,
+
+                            text: "Amount (₹)"
+
+                        }
+
+                    },
+
+                    x: {
+
+                        title: {
+
+                            display: true,
+
+                            text: "Category"
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+        });
+
+
+        // =========================
+        // PIE CHART
+        // =========================
+
+        const pieCanvas =
+            document.getElementById("expensePieChart");
+
+
+        new Chart(pieCanvas, {
+
+            type: "pie",
+
+            data: {
+
+                labels: categoryNames,
+
+                datasets: [{
+
+                    label: "Expense Distribution",
+
+                    data: categoryValues
+
+                }]
+
+            },
+
+            options: {
+
+                responsive: true,
+
+                maintainAspectRatio: true
+
+            }
+
+        });
+
+    </script>
+
+
+</body>
+
+</html>

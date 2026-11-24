@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Edit Expense</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+    <nav>
+
+        <div class="logo">
+            💰 Expense Tracker
+        </div>
+
+        <div class="nav-links">
+            <a href="/">Dashboard</a>
+            <a href="/">Expenses</a>
+            <a href="#">Reports</a>
+        </div>
+
+    </nav>
+
+
+    <div class="container">
+
+        <div class="add-section">
+
+            <h1>Edit Expense</h1>
+
+            <p class="subtitle">
+                Update your expense details.
+            </p>
+
+
+            <form action="/edit/{{ expense[0] }}"
+                  method="POST">
+
+                <input
+                    type="text"
+                    name="description"
+                    value="{{ expense[1] }}"
+                    placeholder="Expense description"
+                    required>
+
+
+                <input
+                    type="number"
+                    name="amount"
+                    value="{{ expense[2] }}"
+                    placeholder="Amount"
+                    required>
+
+
+                <select name="category">
+
+                    <option
+                        {% if expense[3] == "Food" %}selected{% endif %}>
+                        Food
+                    </option>
+
+                    <option
+                        {% if expense[3] == "Travel" %}selected{% endif %}>
+                        Travel
+                    </option>
+
+                    <option
+                        {% if expense[3] == "Shopping" %}selected{% endif %}>
+                        Shopping
+                    </option>
+
+                    <option
+                        {% if expense[3] == "Education" %}selected{% endif %}>
+                        Education
+                    </option>
+
+                    <option
+                        {% if expense[3] == "Entertainment" %}selected{% endif %}>
+                        Entertainment
+                    </option>
+
+                    <option
+                        {% if expense[3] == "Other" %}selected{% endif %}>
+                        Other
+                    </option>
+
+                </select>
+
+
+                <input
+                    type="date"
+                    name="date"
+                    value="{{ expense[4] }}"
+                    required>
+
+
+                <button type="submit">
+                    ✏️ Update Expense
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>
